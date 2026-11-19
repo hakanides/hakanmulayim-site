@@ -1,0 +1,42 @@
+---
+import Page from '../../layouts/Page.astro';
+import { profile } from '../../data/profile';
+import { useTranslations, type Lang } from '../../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const btn = 'inline-block px-4 py-2 border border-ink dark:border-gray-100 text-sm font-medium hover:bg-ink hover:text-white dark:hover:bg-gray-100 dark:hover:text-ink transition-colors';
+const inputCls = 'w-full border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-ink dark:focus:border-white';
+---
+<Page title={t('contact.title')} description={t('contact.intro')} lang={lang} intro={t('contact.intro')} banner="/img/banner-contact.jpg" bannerPosition="center 45%" bannerOverlay={0.1} bannerHeight="lg:min-h-[44vw]">
+  <div class="mt-8 flex flex-wrap gap-3">
+    <a href={`mailto:${profile.email}`} class={btn}>{t('contact.email')}: {profile.email}</a>
+    {profile.whatsappNumber && <a href={`https://wa.me/${profile.whatsappNumber}`} class={btn}>{t('contact.whatsapp')}</a>}
+    {profile.calendlyUrl && <a href={profile.calendlyUrl} class={btn}>{t('contact.calendly')}</a>}
+  </div>
+
+  {profile.web3formsKey && (
+    <form action="https://api.web3forms.com/submit" method="POST" class="mt-10 max-w-xl space-y-4">
+      <input type="hidden" name="access_key" value={profile.web3formsKey} />
+      <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" class="hidden" style="display:none" />
+      <div>
+        <label for="name" class="block text-sm font-medium mb-1">{t('contact.form.name')}</label>
+        <input id="name" name="name" type="text" required class={inputCls} />
+      </div>
+      <div>
+        <label for="email" class="block text-sm font-medium mb-1">{t('contact.form.email')}</label>
+        <input id="email" name="email" type="email" required class={inputCls} />
+      </div>
+      <div>
+        <label for="subject" class="block text-sm font-medium mb-1">{t('contact.form.subject')}</label>
+        <input id="subject" name="subject" type="text" required class={inputCls} />
+      </div>
+      <div>
+        <label for="message" class="block text-sm font-medium mb-1">{t('contact.form.message')}</label>
+        <textarea id="message" name="message" rows="5" required class={inputCls}></textarea>
+      </div>
+      <button type="submit" class={btn}>{t('contact.form.send')}</button>
+    </form>
+  )}
+</Page>

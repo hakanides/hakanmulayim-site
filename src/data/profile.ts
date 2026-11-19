@@ -1,0 +1,85 @@
+export type ProfileKey = 'linkedin' | 'orcid' | 'scholar' | 'github';
+
+export interface LangContent {
+  tagline: string;
+  description: string;   // <meta name="description">
+  bio: string[];
+  cvLabel: string;
+  emailLabel: string;
+  scrollHint: string;
+  /** Bio altındaki yönlendirme kartları */
+  links: { href: string; title: string; text: string }[];
+}
+
+export interface Profile {
+  name: string;
+  email: string;
+  /** Uluslararası format, + ve boşluk olmadan, ör. '905321234567'; boş = düğme yok */
+  whatsappNumber: string;
+  /** ör. 'https://calendly.com/...'; boş = düğme yok */
+  calendlyUrl: string;
+  /** Web3Forms access key; boş = form yok */
+  web3formsKey: string;
+  cvPdfUrl: string;      // ör. '/cv/hakan-mulayim-cv.pdf'; boş = düğme yok
+  heroImage: string;     // ör. '/img/hero.jpg'; boş = düz koyu zemin
+  portrait: string;      // ör. '/img/portrait.jpg'; boş = bölüm yok
+  profiles: Record<ProfileKey, string>;   // boş = ikon yok
+  tr: LangContent;
+  en: LangContent;
+}
+
+export const profile: Profile = {
+  name: 'hakan mülayim',
+  email: 'hakan.mulayim@sabanciuniv.edu',
+  whatsappNumber: '',
+  calendlyUrl: '',
+  web3formsKey: '',
+  cvPdfUrl: '',
+  heroImage: '/img/hero.jpg',
+  portrait: '',
+  profiles: { linkedin: '', orcid: 'https://orcid.org/0009-0003-0849-0155', scholar: '', github: '' },
+
+  tr: {
+    tagline: 'Ekonomi Yüksek Lisans Adayı, Sabancı Üniversitesi · Matematik & Ekonomi Eğitmeni',
+    description:
+      'Hakan Mülayim — Sabancı Üniversitesi Ekonomi yüksek lisans adayı; mikroekonomi teorisi ve ulaşım ekonomisi üzerine araştırma; AP, IB, SAT, TMUA için Matematik & Ekonomi eğitmeni.',
+    bio: [
+      "Hakan Mülayim, Sabancı Üniversitesi'nde Ekonomi yüksek lisans öğrencisi ve uluslararası sınavlara hazırlanan öğrencilerle matematik ve ekonomi alanında çalışan bir eğitmendir. Araştırma ilgi alanları microeconomic theory, game theory, industrial organization ile matching and market design; bunların transportation ve urban economics alanlarına uygulamalarıdır.",
+      "Lisans derecesini Mimar Sinan Güzel Sanatlar Üniversitesi Matematik Bölümü'nde tamamlamıştır. Lisans yıllarında Khovanov homology üzerine bitirme projesi yürütmüş, Directed Reading Program Turkey kapsamında 4-manifold topology çalışmış ve Galatasaray Üniversitesi'nde okuma seminerlerine katılmıştır. 2017'den bu yana Nesin Matematik Köyü programlarının bir parçasıdır; 2026 yaz programında köyde eğitmen olarak görev yapmıştır.",
+      "Sabancı Üniversitesi'nde Games and Strategies (ECON 201) ile Statistical Modelling (MATH 306) derslerinde asistanlık yapmıştır. Bunun yanında AP Calculus, AP Microeconomics/Macroeconomics, IB Mathematics (AA/AI), IB Economics, SAT Math ve TMUA sınavlarına hazırlanan öğrencilerle ve Ekonomi Olimpiyatı adaylarıyla çalışmaktadır.",
+    ],
+    cvLabel: 'CV (PDF)',
+    emailLabel: 'E-posta',
+    scrollHint: 'Aşağı kaydır',
+    links: [
+      { href: '/cv', title: 'CV', text: 'Eğitim, araştırma ve öğretim deneyimi.' },
+      { href: '/arastirma', title: 'Araştırma', text: 'İlgi alanları, devam eden projeler ve matematik geçmişi.' },
+      { href: '/ogretim', title: 'Öğretim', text: 'Üniversite dersleri, Nesin Köyü ve AP/IB/SAT/TMUA hazırlığı.' },
+    ],
+  },
+
+  en: {
+    tagline: 'M.A. Candidate in Economics, Sabancı University · Mathematics & Economics Educator',
+    description:
+      'Hakan Mülayim — M.A. candidate in Economics at Sabancı University; research in microeconomic theory and transportation economics; Mathematics & Economics educator for AP, IB, SAT and TMUA.',
+    bio: [
+      'Hakan Mülayim is an M.A. student in Economics at Sabancı University and an educator working with students preparing for international examinations in mathematics and economics. His research interests lie in microeconomic theory, game theory, industrial organization, and matching and market design, with applications to transportation and urban economics.',
+      'He holds a B.Sc. in Mathematics from Mimar Sinan Fine Arts University. As an undergraduate he completed a graduation project on Khovanov homology, studied four-dimensional topology through the Directed Reading Program Turkey, and attended reading seminars at Galatasaray University. He has been part of the Nesin Mathematics Village programs since 2017 and was an instructor in its 2026 summer program.',
+      'At Sabancı University he has served as a teaching assistant for Games and Strategies (ECON 201) and Statistical Modelling (MATH 306). He also teaches students preparing for AP Calculus, AP Micro/Macroeconomics, IB Mathematics (AA/AI), IB Economics, SAT Math and TMUA, and coaches candidates for the Economics Olympiad.',
+    ],
+    cvLabel: 'CV (PDF)',
+    emailLabel: 'Email',
+    scrollHint: 'Scroll down',
+    links: [
+      { href: '/en/cv', title: 'CV', text: 'Education, research and teaching experience.' },
+      { href: '/en/research', title: 'Research', text: 'Interests, ongoing projects and a mathematics background.' },
+      { href: '/en/teaching', title: 'Teaching', text: 'University courses, Nesin Village and AP/IB/SAT/TMUA preparation.' },
+    ],
+  },
+};
+
+const PROFILE_ORDER: ProfileKey[] = ['linkedin', 'orcid', 'scholar', 'github'];
+
+export function visibleProfiles(p: Profile): { key: ProfileKey; url: string }[] {
+  return PROFILE_ORDER.filter((k) => p.profiles[k]).map((k) => ({ key: k, url: p.profiles[k] }));
+}
